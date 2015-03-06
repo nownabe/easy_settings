@@ -2,8 +2,10 @@ require "hashie"
 require "yaml"
 require "erb"
 
+require "easy_settings_version"
+
 class EasySettings < Hashie::Mash
-  VERSION = "0.0.1"
+  include EasySettingsVersion
 
   class << self
     attr_accessor :source_hash, :source_file, :namespace
