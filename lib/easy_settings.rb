@@ -28,6 +28,14 @@ class EasySettings < Hashie::Mash
       load!
     end
 
+    def [](key)
+      instance[key]
+    end
+
+    def []=(key, val)
+      instance[key] = val
+    end
+
     private
 
     def _source
