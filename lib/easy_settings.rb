@@ -7,15 +7,15 @@ require "easy_settings_version"
 class EasySettings < Hashie::Mash
   include EasySettingsVersion
 
+  class SourceFileNotExist < StandardError; end
+
+  DEFAULT_FILES = %w(settings.yml config/settings.yml)
+
   class << self
     attr_accessor :source_hash, :source_file, :namespace
 
-    def method_missing(method_name, *args, &blk)
-      instance.send(method_name, *args, &blk)
-    end
-
     def instance
-      @instance ||= new(source_hash || source_file, nil, namespace)
+      @instance ||= new(namespace ? _source[namespace] : _source)
     end
 
     def load!
@@ -27,32 +27,43 @@ class EasySettings < Hashie::Mash
       @instance = nil
       load!
     end
-  end
 
-  def initialize(source = nil, default = nil, namespace = nil, &blk)
-    source = load_source_file(source) if source.nil? or source.is_a?(String)
-    source = source[namespace] if namespace
-    super(source, default)
+    private
+
+    def _source
+      return source_hash.to_hash if source_hash
+      return _source_from_file if source_file
+      _source_from_default_file
+    end
+
+    def _load_file(file)
+      content = File.read(file)
+      content.empty? ? nil : YAML.load(ERB.new(content).result).to_hash
+    end
+
+    def _source_from_file
+      unless FileTest.exist?(source_file)
+        raise(SourceFileNotExist, "Your source file '#{file}' does not exist.")
+      end
+      _load_file(source_file)
+    end
+
+    def _source_from_default_file
+      DEFAULT_FILES.each do |f|
+        path = File.expand_path(f, Dir.pwd)
+        return _load_file(path) if FileTest.exist?(path)
+      end
+      nil
+    end
+
+    def method_missing(method_name, *args, &blk)
+      instance.send(method_name, *args, &blk)
+    end
   end
 
   def assign_property(name, value)
     super
     self[name]
-  end
-
-  def find_file(file)
-    return file if file and FileTest.exist?(file)
-    ["settings.yml", "config/settings.yml"].each do |f|
-      path = File.expand_path(f, Dir.pwd)
-      return path if FileTest.exist?(path)
-    end
-    nil
-  end
-
-  def load_source_file(source)
-    return nil unless file = find_file(source)
-    content = File.read(file)
-    content.empty? ? {} : YAML.load(ERB.new(content).result).to_hash
   end
 
   def method_missing(method_name, *args, &blk)
