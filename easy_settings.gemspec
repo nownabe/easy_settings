@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "easy_settings"
+require "easy_settings_version"
 
 Gem::Specification.new do |spec|
   spec.name          = "easy_settings"
-  spec.version       = EasySettings::VERSION
+  spec.version       = EasySettingsVersion::VERSION
   spec.authors       = ["nownabe"]
   spec.email         = ["nownabe@gmail.com"]
   spec.summary       = %q{EasySettings is a simple settings with YAML file.}
