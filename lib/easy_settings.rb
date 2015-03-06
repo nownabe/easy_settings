@@ -9,8 +9,6 @@ class EasySettings < Hashie::Mash
     attr_accessor :source_hash, :source_file, :namespace
 
     def method_missing(method_name, *args, &blk)
-      p method_name
-      p args
       instance.send(method_name, *args, &blk)
     end
 
@@ -50,8 +48,7 @@ class EasySettings < Hashie::Mash
   end
 
   def load_source_file(source)
-    file = find_file(source)
-    return nil unless file # = find_file(source)
+    return nil unless file = find_file(source)
     content = File.read(file)
     content.empty? ? {} : YAML.load(ERB.new(content).result).to_hash
   end
