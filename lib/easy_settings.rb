@@ -51,7 +51,7 @@ class EasySettings < Hashie::Mash
 
     def _source_from_file
       unless FileTest.exist?(source_file)
-        raise(SourceFileNotExist, "Your source file '#{file}' does not exist.")
+        raise(SourceFileNotExist, "Your source file '#{source_file}' does not exist.")
       end
       _load_file(source_file)
     end
