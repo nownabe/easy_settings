@@ -1,0 +1,14 @@
+defaults: &defaults
+  app_name: EasySettingsTestDefault
+  admins:
+    admin1:
+      password: PassWord1
+      role: administrator
+    admin2:
+      password: PassWord2
+      role: manager
+  erb: <%= "This was set by ERB" %>
+
+test: 
+  <<: *defaults
+  app_name: EasySettingsTest

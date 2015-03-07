@@ -1,0 +1,9 @@
+app_name: EasySettingsTest
+admins:
+  admin1:
+    password: PassWord1
+    role: administrator
+  admin2:
+    password: PassWord2
+    role: manager
+erb: <%= "This was set by ERB" %>
