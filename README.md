@@ -157,6 +157,13 @@ EasySettings.to_h
 #=> {"users"=>{"nownabe"=>{"gender"=>:male}}}
 ```
 
+Or more simple:
+
+```ruby
+EasySettings.users!.nownabe = {gender: :male}
+#=> {:gender=>:male}
+```
+
 ### Reset EasySettings
 ```ruby
 EasySettings.source_file = "new_settings.yml"
