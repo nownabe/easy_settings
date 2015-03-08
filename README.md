@@ -1,4 +1,4 @@
-# EasySettings
+# EasySettings [![Code Climate](https://codeclimate.com/github/nownabe/easy_settings/badges/gpa.svg)](https://codeclimate.com/github/nownabe/easy_settings)
 EasySettings is a simple manager of setting constants.
 
 ## Installation
