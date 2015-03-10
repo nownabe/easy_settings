@@ -4,6 +4,11 @@ SimpleCov.start do
   add_filter "spec"
 end
 
+if ENV["CI"]
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
+end
+
 require "fileutils"
 require "easy_settings" 
 
