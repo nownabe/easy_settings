@@ -61,7 +61,7 @@ class EasySettings < Hashie::Mash
         path = File.expand_path(f, Dir.pwd)
         return _load_file(path) if FileTest.exist?(path)
       end
-      nil
+      {}
     end
 
     def method_missing(method_name, *args, &blk)
