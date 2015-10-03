@@ -3,7 +3,7 @@ require "yaml"
 require "erb"
 
 class EasySettings < Hashie::Mash
-  class SourceFileNotExist < StandardError; end
+  SourceFileNotExist = Class.new(StandardError)
 
   DEFAULT_FILES = %w(settings.yml config/settings.yml)
 
@@ -74,16 +74,16 @@ class EasySettings < Hashie::Mash
     return self.[](method_name, &blk) if key?(method_name)
     name, suffix = method_suffix(method_name)
     case suffix
-    when '='
+    when "="
       assign_property(name, args.first)
-    when '?'
+    when "?"
       !!self[name]
-    when '!'
+    when "!"
       initializing_reader(name)
-    when '_'
+    when "_"
       underbang_reader(name)
     else
-      if !args[0].nil? or (args[1] and args[1][:nil])
+      if !args[0].nil? || (args[1] && args[1][:nil])
         assign_property(name, args.first)
       else
         self[method_name]
