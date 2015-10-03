@@ -47,7 +47,7 @@ And you can use EasySettings constant in your application:
 ```ruby
 require "easy_settings"
 
-EasySettings.loglevel #=> "info"
+EasySettings.log_level #=> "info"
 ```
 
 EasySettings hash can be used with method style, string keys and symbol keys:
