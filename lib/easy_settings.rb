@@ -2,11 +2,7 @@ require "hashie"
 require "yaml"
 require "erb"
 
-require "easy_settings_version"
-
 class EasySettings < Hashie::Mash
-  include EasySettingsVersion
-
   class SourceFileNotExist < StandardError; end
 
   DEFAULT_FILES = %w(settings.yml config/settings.yml)
