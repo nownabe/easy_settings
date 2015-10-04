@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+gem 'rails', '4.2.4'
+gem 'jbuilder', '~> 2.0'
+gem "easy_settings", path: File.expand_path("../../../", __FILE__)
