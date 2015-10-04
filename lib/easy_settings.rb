@@ -54,10 +54,14 @@ class EasySettings < Hashie::Mash
 
     def _source_from_default_file
       DEFAULT_FILES.each do |f|
-        path = File.expand_path(f, Dir.pwd)
+        path = File.expand_path(f, _root_path)
         return _load_file(path) if FileTest.exist?(path)
       end
       {}
+    end
+
+    def _root_path
+      Dir.pwd
     end
 
     def method_missing(method_name, *args, &blk)
