@@ -203,6 +203,35 @@ end
 Config.endpoint
 ```
 
+## With Rails
+In your Gemfile:
+
+```ruby
+gem "easy_settings"
+```
+
+And write your settings in `config/settings.yml` with env:
+
+```ruby
+default: &default
+  app_name: MyApp
+  apikey: <%= ENV["APIKEY"] %>
+
+development:
+  <<: *default
+  endpoint: https://endpoint-for-development
+
+test:
+  <<: *default
+  endpoint: https://endpoint-for-test
+
+production:
+  <<: *default
+  endpoint: https://endpoint-for-production
+```
+
+Then you can access EasySettings anywhere.
+
 ## Contributing
 
 1. Fork it ( https://github.com/nownabe/easy_settings/fork )
