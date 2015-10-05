@@ -1,0 +1,15 @@
+default: &default
+  app_name: Test App for EasySettings
+  apikey: <%= ENV["APIKEY"] %>
+
+development:
+  <<: *default
+  endpoint: https://endpoint-for-development
+
+test:
+  <<: *default
+  endpoint: https://endpoint-for-test
+
+production:
+  <<: *default
+  endpoint: https://endpoint-for-prouduction
