@@ -1,0 +1,1 @@
+EasySettings.namespace = Rails.env

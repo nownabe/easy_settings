@@ -95,3 +95,7 @@ class EasySettings < Hashie::Mash
     end
   end
 end
+
+if Object.const_defined?(:Rails)
+  require "easy_settings/rails"
+end
