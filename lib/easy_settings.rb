@@ -76,7 +76,7 @@ class EasySettings < Hashie::Mash
 
   def method_missing(method_name, *args, &blk)
     return self.[](method_name, &blk) if key?(method_name)
-    name, suffix = method_suffix(method_name)
+    name, suffix = method_name_and_suffix(method_name)
     case suffix
     when "="
       assign_property(name, args.first)
