@@ -4,11 +4,16 @@ require "erb"
 
 class EasySettings < Hashie::Mash
   SourceFileNotExist = Class.new(StandardError)
-
-  DEFAULT_FILES = %w(settings.yml config/settings.yml)
-
   class << self
-    attr_accessor :source_hash, :source_file, :namespace
+    attr_accessor :source_hash, :source_file, :namespace, :default_files
+
+    def inherited(child_class)
+      child_class.class_eval do
+        define_singleton_method(:default_files) do
+          instance_variable_get(:@default_files) || superclass.default_files
+        end
+      end
+    end
 
     def instance
       @instance ||= new(namespace ? _source[namespace] : _source)
@@ -53,7 +58,7 @@ class EasySettings < Hashie::Mash
     end
 
     def _source_from_default_file
-      DEFAULT_FILES.each do |f|
+      default_files.each do |f|
         path = File.expand_path(f, _root_path)
         return _load_file(path) if FileTest.exist?(path)
       end
@@ -68,6 +73,8 @@ class EasySettings < Hashie::Mash
       instance.send(method_name, *args, &blk)
     end
   end
+
+  self.default_files = %w(settings.yml config/settings.yml)
 
   def assign_property(name, value)
     super
