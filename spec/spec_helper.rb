@@ -10,7 +10,7 @@ if ENV["CI"]
 end
 
 require "fileutils"
-require "easy_settings" 
+require "easy_settings"
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

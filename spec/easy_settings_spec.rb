@@ -33,7 +33,7 @@ shared_examples_for "EasySettings" do |proc|
     settings.foo = :bar
     expect(settings.foo).to eq :bar
 
-    admin3 = {"password" => "PassWord3", "role" => "administrator"}
+    admin3 = { "password" => "PassWord3", "role" => "administrator" }
     settings.admins.admin3 = admin3
     expect(settings.admins.admin3.to_h).to eq admin3
   end
@@ -42,7 +42,7 @@ shared_examples_for "EasySettings" do |proc|
     settings[:foo] = :bar
     expect(settings.foo).to eq :bar
 
-    admin3 = {"password" => "PassWord3", "role" => "administrator"}
+    admin3 = { "password" => "PassWord3", "role" => "administrator" }
     settings[:admins][:admin3] = admin3
     expect(settings.admins.admin3.to_h).to eq admin3
   end
@@ -120,46 +120,26 @@ shared_examples_for "EasySettings" do |proc|
 
     it "can set nil when using nil option" do
       expect(settings.newkey(nil, nil: true)).to be_nil
-      expect(settings.has_key?(:newkey)).to be_truthy
+      expect(settings.key?(:newkey)).to be_truthy
       expect(settings.newkey).to be_nil
     end
 
     it "doesn't set nil when not using nil option" do
       expect(settings.newkey(nil)).to be_nil
-      expect(settings.has_key?(:newkey)).to be_falsey
+      expect(settings.key?(:newkey)).to be_falsey
     end
   end
 end
 
+require "helpers/default_paths"
+
 describe EasySettings do
-  before do
-    FileUtils.mkdir File.expand_path("../../config", __FILE__)
-  end
-
-  after do
-    FileUtils.rm_rf File.expand_path("../../config", __FILE__)
-  end
-
-  let(:settings) do
-    Class.new(EasySettings)
-  end
-
-  let(:test_settings_file) do
-    File.expand_path("../settings.yml", __FILE__)
-  end
-
-  let(:default_settings_path1) do
-    File.expand_path("../../settings.yml", __FILE__)
-  end
-
-  let(:default_settings_path2) do
-    File.expand_path("../../config/settings.yml", __FILE__)
-  end
+  include_context "default_paths"
 
   let(:custom_settings_path) do
     File.expand_path("../../config/application.yml", __FILE__)
   end
-  
+
   let(:app_name) do
     "EasySettingsTest"
   end
@@ -173,12 +153,12 @@ describe EasySettings do
       FileUtils.rm_f default_settings_path1
     end
 
-    it_behaves_like("EasySettings", Proc.new{Class.new(EasySettings)})
+    it_behaves_like("EasySettings", proc { Class.new(EasySettings) })
 
     describe ".reload!" do
       it "can reload source" do
         expect(settings.app_name).to eq app_name
-        settings.source_hash = {app_name: "RELOAD"}
+        settings.source_hash = { app_name: "RELOAD" }
         expect(settings.reload!).to be_truthy
         expect(settings.app_name).to eq "RELOAD"
       end
@@ -194,7 +174,7 @@ describe EasySettings do
       FileUtils.rm_f default_settings_path2
     end
 
-    it_behaves_like("EasySettings", Proc.new{Class.new(EasySettings)})
+    it_behaves_like("EasySettings", proc { Class.new(EasySettings) })
   end
 
   context "from custom path" do
@@ -208,7 +188,7 @@ describe EasySettings do
 
     it_behaves_like(
       "EasySettings",
-      Proc.new do
+      proc do
         Class.new(EasySettings) do
           self.source_file = File.expand_path("../../config/application.yml", __FILE__)
         end
@@ -219,8 +199,8 @@ describe EasySettings do
   context "from source hash" do
     it_behaves_like(
       "EasySettings",
-      Proc.new do
-        source_file = File.expand_path("../settings.yml", __FILE__)
+      proc do
+        source_file = File.expand_path("../config/settings.yml", __FILE__)
         Class.new(EasySettings) do
           self.source_file = source_file
           self.source_hash = YAML.load_file(source_file)
@@ -232,9 +212,9 @@ describe EasySettings do
   context "with namespace" do
     it_behaves_like(
       "EasySettings",
-      Proc.new do
+      proc do
         Class.new(EasySettings) do
-          self.source_file = File.expand_path("../settings_with_namespace.yml", __FILE__)
+          self.source_file = File.expand_path("../config/namespace.yml", __FILE__)
           self.namespace   = "test"
         end
       end
@@ -249,7 +229,7 @@ describe EasySettings do
 
   context "with empty source" do
     it "EasySettings become empty hash" do
-      settings.source_file = File.expand_path("../empty_settings.yml", __FILE__)
+      settings.source_file = File.join(spec_config_path, "empty.yml")
       expect(settings.to_h).to eq({})
     end
   end
@@ -257,7 +237,7 @@ describe EasySettings do
   context "specify wrong source path" do
     it "raise error" do
       settings.source_file = "notexist.yml"
-      expect{settings.to_h}.to raise_error(EasySettings::SourceFileNotExist)
+      expect { settings.to_h }.to raise_error(EasySettings::SourceFileNotExist)
     end
   end
 end

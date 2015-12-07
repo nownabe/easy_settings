@@ -9,6 +9,6 @@ defaults: &defaults
       role: manager
   erb: <%= "This was set by ERB" %>
 
-test: 
+test:
   <<: *defaults
   app_name: EasySettingsTest
