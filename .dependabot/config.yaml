@@ -1,0 +1,13 @@
+version: 1
+update_configs:
+  - package_manager: "ruby:bundler"
+    directory: "/"
+    update_schedule: "live"
+    target_branch: "master"
+    default_reviewers:
+      - "nownabe"
+    default_assignees:
+      - "nownabe"
+    allowed_updates:
+      - match:
+          update_type: "all"
