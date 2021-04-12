@@ -1,4 +1,4 @@
-# EasySettings
+# EasySettings (Deprecated)
 [![Gem Version](https://badge.fury.io/rb/easy_settings.svg)](http://badge.fury.io/rb/easy_settings)
 [![Code Climate](https://codeclimate.com/github/nownabe/easy_settings/badges/gpa.svg)](https://codeclimate.com/github/nownabe/easy_settings)
 [![Test Coverage](https://codeclimate.com/github/nownabe/easy_settings/badges/coverage.svg)](https://codeclimate.com/github/nownabe/easy_settings)
